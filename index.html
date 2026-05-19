@@ -101,6 +101,50 @@
             gap: 16px;
         }
 
+        /* ══ MOBILE RESPONSIVE ══════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            /* general inner padding */
+            .tb-inner { padding: 0 14px; gap: 14px; }
+
+            /* stat cards: 2 columns on mobile */
+            .tb-top-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .stat-card { padding: 16px 14px; border-radius: 16px; }
+            .stat-card-num { font-size: 26px; }
+            .stat-card-label { font-size: 10px; }
+            .stat-card-sub { font-size: 10px; }
+            .stat-card-icon { width: 32px; height: 32px; font-size: 15px; }
+
+            /* mid row: full vertical stack */
+            .tb-mid-row { grid-template-columns: 1fr !important; gap: 12px; }
+
+            /* right panel: side by side on mobile */
+            .right-panel { flex-direction: row; flex-wrap: wrap; gap: 16px; }
+            .clock-time-big { font-size: 34px; }
+
+            /* dock: wrap, center everything */
+            .tb-bottom-row {
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 12px 14px;
+                border-radius: 18px;
+                justify-content: center;
+            }
+            .dock-divider { display: none; }
+            .dock-btn { width: 40px; height: 40px; border-radius: 11px; }
+            .social-icon-btn { width: 36px; height: 36px; border-radius: 10px; }
+            .hire-cta { padding: 8px 14px; }
+            .hire-cta-text { font-size: 12px; }
+            /* hide clock on dock on mobile — saves space */
+            .tb-bottom-row > div:last-child { display: none; }
+
+            /* hide spinning orbit icons on mobile — they overlap hero text */
+            .spin-container { display: none; }
+
+            /* hero: hide the big VR image on mobile */
+            .absolute.inset-0 { display: none; }
+        }
+
+
         .stat-card {
             background: rgba(15,23,42,0.55);
             border: 1px solid rgba(255,255,255,0.08);
@@ -203,6 +247,10 @@
             display: grid;
             grid-template-columns: 1fr 1fr 260px;
             gap: 16px;
+        }
+        @media (max-width: 1024px) {
+            .tb-mid-row { grid-template-columns: 1fr 1fr; }
+            .right-panel { grid-column: 1 / -1; flex-direction: row; gap: 24px; }
         }
 
         /* skill bars panel */
@@ -514,13 +562,13 @@
 
             <!-- HEADER -->
             <header class="w-full flex justify-between items-center gap-4">
-                <h1 class="text-xl font-bold text-slate-200">DEOS Mutama <span class="text-xs font-light text-slate-500">| DEV</span></h1>
+                <h1 class="text-xl font-bold text-slate-200">Toussaint Kavanga <span class="text-xs font-light text-slate-500">| DEV</span></h1>
                 <div class="flex items-center gap-4">
                     <div class="relative w-40 md:w-60">
                         <input type="search" placeholder="Search projects..." class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-900/30 border border-white/20 placeholder:text-slate-600 focus:ring-1 focus:ring-teal-500/50 outline-none text-sm">
                         <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
-                    <a href="./assets/Resume.pdf.pdf" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100/10 border border-white/20 hover:bg-slate-100/20 transition-all text-sm font-semibold">
+                    <a href="./assets/Resume.pdf" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100/10 border border-white/20 hover:bg-slate-100/20 transition-all text-sm font-semibold">
                         View Resume
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>
                     </a>
@@ -547,7 +595,7 @@
 
                 <div class="w-full md:max-w-xl p-8 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/30 shadow-2xl relative z-10">
                     <p class="text-slate-800 text-sm font-bold font-mono mb-2 uppercase tracking-widest">Engineer. Innovator. Researcher.</p>
-                    <h2 class="text-5xl md:text-6xl font-extrabold text-white mb-6 drop-shadow-md">DEOS Mutama</h2>
+                    <h2 class="text-5xl md:text-6xl font-extrabold text-white mb-6 drop-shadow-md">Toussaint Kavanga</h2>
                     <p class="text-slate-900 font-medium text-lg leading-relaxed max-w-lg">
                         Multidisciplinary Engineer with expertise in <span class="font-extrabold text-slate-950">Full-Stack Web</span>, <span class="font-extrabold text-slate-950">Flutter Mobile</span>, <span class="font-extrabold text-slate-950">Embedded Systems</span>, and AI. Combining deep industrial knowledge with polished UI/UX to build scalable, impactful solutions.
                     </p>
@@ -689,9 +737,9 @@
                     <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px;">
                         <div class="panel-title" style="margin-bottom:12px;">// find me</div>
                         <div style="display:flex; flex-direction:column; gap:8px;">
-                            <a href="#" style="display:flex; align-items:center; gap:10px; text-decoration:none; padding:8px 12px; border-radius:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); transition:background 0.18s;" onmouseover="this.style.background='rgba(45,212,191,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+                            <a href="https://github.com/mutdeos" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; gap:10px; text-decoration:none; padding:8px 12px; border-radius:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); transition:background 0.18s;" onmouseover="this.style.background='rgba(45,212,191,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
                                 <span style="font-size:15px;">🐙</span>
-                                <span style="font-size:12px; color:rgba(255,255,255,0.5);">github.com/toussaint</span>
+                                <span style="font-size:12px; color:rgba(255,255,255,0.5);">github.com/mutdeos</span>
                             </a>
                             <a href="#" style="display:flex; align-items:center; gap:10px; text-decoration:none; padding:8px 12px; border-radius:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); transition:background 0.18s;" onmouseover="this.style.background='rgba(45,212,191,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
                                 <span style="font-size:15px;">💼</span>
@@ -745,7 +793,7 @@
 
                 <!-- Social icons -->
                 <div class="dock-socials">
-                    <a href="#" class="social-icon-btn">
+                    <a href="https://github.com/mutdeos" target="_blank" rel="noopener noreferrer" class="social-icon-btn">
                         <i class="ti ti-brand-github" style="font-size:18px; color:rgba(255,255,255,0.55);"></i>
                         <span class="dock-btn-tooltip">GitHub</span>
                     </a>
