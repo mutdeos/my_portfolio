@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toussaint Kavanga | Dev Portfolio</title>
+    
+    <link href="./dist/output.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ─── Orbit Animation ───────────────────────────────────────────── */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        @keyframes unspin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(-360deg); }
+        }
+        .spin-container {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px; height: 280px;
+            animation: spin 15s linear infinite;
+        }
+        .lang-icon {
+            position: absolute;
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            animation: unspin 15s linear infinite;
+        }
+        .icon-1 { top: 0; left: 50%; transform: translateX(-50%); }
+        .icon-2 { top: 20%; right: 0; }
+        .icon-3 { bottom: 0; right: 20%; }
+        .icon-4 { bottom: 0; left: 20%; }
+        .icon-5 { top: 20%; left: 0; }
+
+        /* ─── Glass ─────────────────────────────────────────────────────── */
+        .glass-panel {
+            background-color: rgba(15, 23, 42, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ─── TASKBAR SECTION ───────────────────────────────────────────── */
+        #taskbar-section {
+            width: 100%;
+            padding: 48px 0 56px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* faint grid lines */
+        #taskbar-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(45,212,191,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(45,212,191,0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+        }
+
+        .tb-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* ── Section heading ── */
+        .tb-heading {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .tb-heading-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(45,212,191,0.4) 0%, transparent 100%);
+        }
+        .tb-heading-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(45,212,191,0.7);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        /* ── Top row: 3 stat cards + status ── */
+        .tb-top-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: rgba(15,23,42,0.55);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(45,212,191,0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat-card:hover { border-color: rgba(45,212,191,0.25); transform: translateY(-3px); }
+        .stat-card:hover::after { opacity: 1; }
+
+        .stat-card-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            background: rgba(45,212,191,0.1);
+            border: 1px solid rgba(45,212,191,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        .stat-card-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 36px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+        }
+        .stat-card-num span { color: #2dd4bf; }
+        .stat-card-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .stat-card-sub {
+            font-size: 11px;
+            color: rgba(255,255,255,0.25);
+            margin-top: 4px;
+        }
+
+        /* status card variant */
+        .stat-card.status-card {
+            background: rgba(45,212,191,0.06);
+            border-color: rgba(45,212,191,0.2);
+            justify-content: space-between;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(45,212,191,0.12);
+            border: 1px solid rgba(45,212,191,0.3);
+            border-radius: 999px;
+            width: fit-content;
+        }
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #2dd4bf;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,100% { box-shadow: 0 0 0 0 rgba(45,212,191,0.5); }
+            50%      { box-shadow: 0 0 0 6px rgba(45,212,191,0); }
+        }
+        .status-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #5eead4;
+            letter-spacing: 0.05em;
+        }
+        .status-card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+        }
+        .status-card-desc {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            line-height: 1.6;
+        }
+
+        /* ── Middle row: Skills + Social + Clock ── */
+        .tb-mid-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 260px;
+            gap: 16px;
+        }
+
+        /* skill bars panel */
+        .skills-panel {
+            background: rgba(15,23,42,0.55);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 28px 28px;
+        }
+        .panel-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .skill-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+        .skill-row:last-child { margin-bottom: 0; }
+        .skill-name {
+            font-size: 13px;
+            color: rgba(255,255,255,0.65);
+            width: 110px;
+            flex-shrink: 0;
+        }
+        .skill-track {
+            flex: 1;
+            height: 5px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .skill-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #0d9488, #2dd4bf);
+            transform-origin: left;
+            animation: grow-bar 1.2s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        @keyframes grow-bar {
+            from { transform: scaleX(0); }
+            to   { transform: scaleX(1); }
+        }
+        .skill-fill.amber { background: linear-gradient(90deg, #b45309, #f59e0b); }
+        .skill-fill.blue  { background: linear-gradient(90deg, #1d4ed8, #60a5fa); }
+        .skill-fill.pink  { background: linear-gradient(90deg, #9d174d, #f472b6); }
+        .skill-fill.violet{ background: linear-gradient(90deg, #5b21b6, #a78bfa); }
+        .skill-pct {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.3);
+            width: 30px;
+            text-align: right;
+        }
+
+        /* tech stack panel */
+        .stack-panel {
+            background: rgba(15,23,42,0.55);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 28px 28px;
+        }
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .tech-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 8px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            cursor: default;
+            transition: background 0.18s, border-color 0.18s, transform 0.18s;
+        }
+        .tech-chip:hover {
+            background: rgba(45,212,191,0.08);
+            border-color: rgba(45,212,191,0.2);
+            transform: translateY(-3px);
+        }
+        .tech-chip-icon { font-size: 20px; line-height: 1; }
+        .tech-chip-name {
+            font-size: 9px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* clock + contact panel */
+        .right-panel {
+            background: rgba(15,23,42,0.55);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .clock-display {
+            text-align: center;
+        }
+        .clock-time-big {
+            font-family: 'Space Mono', monospace;
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+        .clock-time-big span { color: #2dd4bf; }
+        .clock-date-big {
+            font-size: 12px;
+            color: rgba(255,255,255,0.3);
+            margin-top: 6px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .clock-tz {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(45,212,191,0.5);
+            margin-top: 4px;
+        }
+
+        /* ── Bottom row: Taskbar dock ── */
+        .tb-bottom-row {
+            background: rgba(8,12,28,0.75);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* nav dock */
+        .dock-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .dock-btn {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.18s, transform 0.18s, border-color 0.18s;
+            gap: 3px;
+        }
+        .dock-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-4px); }
+        .dock-btn.active { background: rgba(45,212,191,0.12); border-color: rgba(45,212,191,0.3); }
+        .dock-btn i { font-size: 20px; color: rgba(255,255,255,0.6); }
+        .dock-btn.active i { color: #2dd4bf; }
+        .dock-btn-dot {
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: #2dd4bf;
+        }
+        .dock-btn-tooltip {
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(8,12,28,0.95);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.8);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s;
+            font-family: 'Space Mono', monospace;
+        }
+        .dock-btn:hover .dock-btn-tooltip { opacity: 1; }
+
+        .dock-divider {
+            width: 1px;
+            height: 32px;
+            background: rgba(255,255,255,0.1);
+            margin: 0 8px;
+        }
+
+        /* center pill */
+        .dock-center {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dock-status-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 999px;
+            background: rgba(45,212,191,0.08);
+            border: 1px solid rgba(45,212,191,0.22);
+        }
+        .dock-status-pill-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: #2dd4bf;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        .dock-status-pill-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #5eead4;
+            letter-spacing: 0.04em;
+        }
+
+        /* social icons row */
+        .dock-socials {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .social-icon-btn {
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.18s, border-color 0.18s;
+            position: relative;
+            text-decoration: none;
+        }
+        .social-icon-btn:hover { background: rgba(45,212,191,0.1); border-color: rgba(45,212,191,0.25); transform: translateY(-3px); }
+        .social-icon-btn i { font-size: 18px; color: rgba(255,255,255,0.55); transition: color 0.18s; }
+        .social-icon-btn:hover i { color: #2dd4bf; }
+        .social-icon-btn .dock-btn-tooltip { font-family: 'Space Mono', monospace; }
+
+        /* hire CTA */
+        .hire-cta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(45,212,191,0.15), rgba(20,184,166,0.08));
+            border: 1px solid rgba(45,212,191,0.3);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.18s;
+            white-space: nowrap;
+        }
+        .hire-cta:hover { background: linear-gradient(135deg, rgba(45,212,191,0.25), rgba(20,184,166,0.15)); transform: translateY(-2px); }
+        .hire-cta i { font-size: 18px; color: #2dd4bf; }
+        .hire-cta-text { font-size: 13px; font-weight: 700; color: #5eead4; letter-spacing: 0.04em; }
+        .hire-cta-arrow { font-size: 16px; color: rgba(45,212,191,0.5); }
+    </style>
+</head>
+
+<body class="flex flex-col items-center justify-start p-4 antialiased font-sans selection:bg-teal-500/30 bg-slate-900 bg-cover bg-center bg-fixed min-h-screen" style="background-image: url('./assets/float.png');">
+
+    <!-- ════════════════════════════════════════════
+         MAIN PORTFOLIO PANEL
+    ════════════════════════════════════════════ -->
+    <div class="relative w-full max-w-7xl h-[85vh] glass-panel backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+
+        <!-- SIDEBAR NAV -->
+        <nav class="md:w-20 w-full h-16 md:h-full glass-panel backdrop-blur-sm border-b md:border-b-0 md:border-r border-white/20 flex md:flex-col justify-between items-center md:py-8 py-2 px-6 md:px-0">
+            <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-slate-300 md:w-14 md:h-14">
+                <img src="./assets/programmer.png" alt="Avatar" class="w-full h-full object-cover">
+            </div>
+            <div class="flex md:flex-col gap-6 md:gap-8 items-center text-slate-400">
+                <a href="#" class="p-2 hover:bg-slate-500/10 rounded-lg group">
+                    <img src="./assets/icons/house.png" alt="Home" class="w-6 h-6 opacity-70 group-hover:opacity-100 transition-opacity">
+                </a>
+                <a href="#" class="p-2 hover:bg-slate-500/10 rounded-lg group">
+                    <img src="./assets/icons/code.png" alt="Projects" class="w-6 h-6 opacity-70 group-hover:opacity-100 transition-opacity">
+                </a>
+                <a href="#" class="p-2 hover:bg-slate-500/10 rounded-lg group">
+                    <img src="./assets/icons/skill.png" alt="Tech Stack" class="w-6 h-6 opacity-70 group-hover:opacity-100 transition-opacity">
+                </a>
+                <a href="#" class="p-2 hover:bg-slate-500/10 rounded-lg group">
+                    <img src="./assets/icons/phone.png" alt="Contact" class="w-6 h-6 opacity-70 group-hover:opacity-100 transition-opacity">
+                </a>
+            </div>
+            <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-slate-300 text-xs font-mono">
+                MSc
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 h-full p-8 md:p-12 text-slate-100 flex flex-col justify-between">
+
+            <!-- HEADER -->
+            <header class="w-full flex justify-between items-center gap-4">
+                <h1 class="text-xl font-bold text-slate-200">DEOS Mutama <span class="text-xs font-light text-slate-500">| DEV</span></h1>
+                <div class="flex items-center gap-4">
+                    <div class="relative w-40 md:w-60">
+                        <input type="search" placeholder="Search projects..." class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-900/30 border border-white/20 placeholder:text-slate-600 focus:ring-1 focus:ring-teal-500/50 outline-none text-sm">
+                        <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <a href="./assets/Resume.pdf.pdf" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100/10 border border-white/20 hover:bg-slate-100/20 transition-all text-sm font-semibold">
+                        View Resume
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>
+                    </a>
+                    <a href="https://wa.me/250780621920" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-full bg-teal-500 hover:bg-teal-600 transition-all text-sm font-bold text-teal-950">
+                        Contact Me
+                    </a>
+                </div>
+            </header>
+
+            <!-- HERO -->
+            <div class="relative w-full flex-1 flex flex-col md:flex-row items-center justify-center md:justify-start gap-12 my-8 z-20">
+                <div class="absolute inset-0 z-0 pointer-events-none w-full h-full flex justify-end items-center px-12">
+                    <div class="relative">
+                        <img src="./assets/VR.png" alt="3D Dev Environment" class="w-auto h-[65vh] object-contain opacity-100 block">
+                        <div class="spin-container">
+                            <div class="lang-icon icon-1"><img src="./assets/icons/kot.png" alt="K"></div>
+                            <div class="lang-icon icon-2"><img src="./assets/icons/swift.png" alt="Swift"></div>
+                            <div class="lang-icon icon-3"><img src="./assets/icons/Python.png" alt="Py"></div>
+                            <div class="lang-icon icon-4"><img src="./assets/icons/GitHub.png" alt="Github"></div>
+                            <div class="lang-icon icon-5"><img src="./assets/icons/c.png" alt="C#"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full md:max-w-xl p-8 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/30 shadow-2xl relative z-10">
+                    <p class="text-slate-800 text-sm font-bold font-mono mb-2 uppercase tracking-widest">Engineer. Innovator. Researcher.</p>
+                    <h2 class="text-5xl md:text-6xl font-extrabold text-white mb-6 drop-shadow-md">DEOS Mutama</h2>
+                    <p class="text-slate-900 font-medium text-lg leading-relaxed max-w-lg">
+                        Multidisciplinary Engineer with expertise in <span class="font-extrabold text-slate-950">Full-Stack Web</span>, <span class="font-extrabold text-slate-950">Flutter Mobile</span>, <span class="font-extrabold text-slate-950">Embedded Systems</span>, and AI. Combining deep industrial knowledge with polished UI/UX to build scalable, impactful solutions.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FOOTER (email form only — socials moved to taskbar) -->
+            <footer class="w-full flex flex-col md:flex-row md:justify-between md:items-center gap-6 z-20">
+                <form class="flex flex-col gap-3 w-full md:max-w-sm">
+                    <input type="email" placeholder="Your email address..." class="px-5 py-3 rounded-xl bg-slate-100/10 border border-white/20 placeholder:text-white focus:ring-1 focus:ring-teal-500/50 outline-none text-sm">
+                    <button type="submit" class="w-full px-5 py-3 rounded-xl bg-slate-950/80 hover:bg-slate-950 border border-white/20 transition-all text-sm font-bold tracking-wide">
+                        GET IN TOUCH
+                    </button>
+                    <div class="flex items-center gap-2 text-xs text-slate-600 mt-1">
+                        <input type="checkbox" id="remember" class="w-3 h-3 accent-teal-500">
+                        <label for="remember">Remember me</label>
+                    </div>
+                </form>
+                <p class="text-xs text-slate-600 font-mono">Scroll down to see more ↓</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         TASKBAR SECTION
+    ════════════════════════════════════════════ -->
+    <section id="taskbar-section" class="w-full max-w-7xl mt-6">
+        <div class="tb-inner">
+
+            <!-- heading label -->
+            <div class="tb-heading">
+                <span class="tb-heading-tag">// dashboard</span>
+                <div class="tb-heading-line"></div>
+            </div>
+
+            <!-- TOP ROW: 4 stat/status cards -->
+            <div class="tb-top-row">
+
+                <!-- Projects -->
+                <div class="stat-card">
+                    <div class="stat-card-icon">🚀</div>
+                    <div class="stat-card-num">12<span>+</span></div>
+                    <div class="stat-card-label">Projects Shipped</div>
+                    <div class="stat-card-sub">Web · Mobile · Embedded</div>
+                </div>
+
+                <!-- Experience -->
+                <div class="stat-card">
+                    <div class="stat-card-icon">⚡</div>
+                    <div class="stat-card-num">3<span>yr</span></div>
+                    <div class="stat-card-label">Experience</div>
+                    <div class="stat-card-sub">Industrial + Research</div>
+                </div>
+
+                <!-- Stacks -->
+                <div class="stat-card">
+                    <div class="stat-card-icon">🛠️</div>
+                    <div class="stat-card-num">4<span>+</span></div>
+                    <div class="stat-card-label">Tech Stacks</div>
+                    <div class="stat-card-sub">Full-Stack · AI · IoT</div>
+                </div>
+
+                <!-- Status card -->
+                <div class="stat-card status-card">
+                    <div class="status-badge">
+                        <div class="status-dot"></div>
+                        <span class="status-badge-text">Available for hire</span>
+                    </div>
+                    <div class="status-card-title">Open to full-time & freelance roles</div>
+                    <div class="status-card-desc">Based in Europe · Remote-friendly · Respond within 24h</div>
+                </div>
+
+            </div>
+
+            <!-- MID ROW: Skills + Stack + Clock -->
+            <div class="tb-mid-row">
+
+                <!-- Skill bars -->
+                <div class="skills-panel">
+                    <div class="panel-title">// proficiency</div>
+
+                    <div class="skill-row">
+                        <span class="skill-name">Full-Stack Web</span>
+                        <div class="skill-track"><div class="skill-fill" style="width:92%"></div></div>
+                        <span class="skill-pct">92%</span>
+                    </div>
+                    <div class="skill-row">
+                        <span class="skill-name">Flutter Mobile</span>
+                        <div class="skill-track"><div class="skill-fill amber" style="width:85%"></div></div>
+                        <span class="skill-pct">85%</span>
+                    </div>
+                    <div class="skill-row">
+                        <span class="skill-name">Embedded / IoT</span>
+                        <div class="skill-track"><div class="skill-fill blue" style="width:78%"></div></div>
+                        <span class="skill-pct">78%</span>
+                    </div>
+                    <div class="skill-row">
+                        <span class="skill-name">AI / ML</span>
+                        <div class="skill-track"><div class="skill-fill violet" style="width:72%"></div></div>
+                        <span class="skill-pct">72%</span>
+                    </div>
+                    <div class="skill-row">
+                        <span class="skill-name">UI / UX Design</span>
+                        <div class="skill-track"><div class="skill-fill pink" style="width:80%"></div></div>
+                        <span class="skill-pct">80%</span>
+                    </div>
+                </div>
+
+                <!-- Tech stack chips -->
+                <div class="stack-panel">
+                    <div class="panel-title">// tech stack</div>
+                    <div class="stack-grid">
+                        <div class="tech-chip"><span class="tech-chip-icon">⚛️</span><span class="tech-chip-name">React</span></div>
+                        <div class="tech-chip"><span class="tech-chip-icon">🐍</span><span class="tech-chip-name">Python</span></div>
+                        <div class="tech-chip"><span class="tech-chip-icon">📱</span><span class="tech-chip-name">Flutter</span></div>
+                        <div class="tech-chip"><span class="tech-chip-icon">🦀</span><span class="tech-chip-name">Kotlin</span></div>
+                        <div class="tech-chip"><span class="tech-chip-icon">🔵</span><span class="tech-chip-name">Swift</span></div>
+                        <div class="tech-chip"><span class="tech-chip-icon">🐙</span><span class="tech-chip-name">GitHub</span></div>
+                        <div class="tech-chip"><span class="tech-chip-icon">🔌</span><span class="tech-chip-name">Embedded</span></div>
+                        <div class="tech-chip"><span class="tech-chip-icon">🤖</span><span class="tech-chip-name">AI/ML</span></div>
+                        <div class="tech-chip"><span class="tech-chip-icon">🌐</span><span class="tech-chip-name">Node.js</span></div>
+                        <div class="tech-chip"><span class="tech-chip-icon">🗄️</span><span class="tech-chip-name">SQL</span></div>
+                        <div class="tech-chip"><span class="tech-chip-icon">🎨</span><span class="tech-chip-name">Figma</span></div>
+                        <div class="tech-chip"><span class="tech-chip-icon">☁️</span><span class="tech-chip-name">Cloud</span></div>
+                    </div>
+                </div>
+
+                <!-- Clock + location -->
+                <div class="right-panel">
+                    <div>
+                        <div class="panel-title">// local time</div>
+                        <div class="clock-display">
+                            <div class="clock-time-big" id="clock-h">--<span>:</span><span id="clock-m">--</span></div>
+                            <div class="clock-date-big" id="clock-date">--- --, ----</div>
+                            <div class="clock-tz">📍 Europe · UTC+1</div>
+                        </div>
+                    </div>
+
+                    <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px;">
+                        <div class="panel-title" style="margin-bottom:12px;">// find me</div>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <a href="#" style="display:flex; align-items:center; gap:10px; text-decoration:none; padding:8px 12px; border-radius:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); transition:background 0.18s;" onmouseover="this.style.background='rgba(45,212,191,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+                                <span style="font-size:15px;">🐙</span>
+                                <span style="font-size:12px; color:rgba(255,255,255,0.5);">github.com/toussaint</span>
+                            </a>
+                            <a href="#" style="display:flex; align-items:center; gap:10px; text-decoration:none; padding:8px 12px; border-radius:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); transition:background 0.18s;" onmouseover="this.style.background='rgba(45,212,191,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+                                <span style="font-size:15px;">💼</span>
+                                <span style="font-size:12px; color:rgba(255,255,255,0.5);">linkedin.com/in/tkavanga</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- BOTTOM ROW: Main dock taskbar -->
+            <div class="tb-bottom-row">
+
+                <!-- Nav icons -->
+                <div class="dock-nav">
+                    <div class="dock-btn active">
+                        <i class="ti ti-home" style="font-size:20px; color:#2dd4bf;"></i>
+                        <div class="dock-btn-dot"></div>
+                        <span class="dock-btn-tooltip">Home</span>
+                    </div>
+                    <div class="dock-btn">
+                        <i class="ti ti-code" style="font-size:20px; color:rgba(255,255,255,0.6);"></i>
+                        <span class="dock-btn-tooltip">Projects</span>
+                    </div>
+                    <div class="dock-btn">
+                        <i class="ti ti-cpu" style="font-size:20px; color:rgba(255,255,255,0.6);"></i>
+                        <span class="dock-btn-tooltip">Tech Stack</span>
+                    </div>
+                    <div class="dock-btn">
+                        <i class="ti ti-file-cv" style="font-size:20px; color:rgba(255,255,255,0.6);"></i>
+                        <span class="dock-btn-tooltip">Resume</span>
+                    </div>
+                    <div class="dock-btn">
+                        <i class="ti ti-message-2" style="font-size:20px; color:rgba(255,255,255,0.6);"></i>
+                        <span class="dock-btn-tooltip">Contact</span>
+                    </div>
+                </div>
+
+                <div class="dock-divider"></div>
+
+                <!-- Status pill -->
+                <div class="dock-center">
+                    <div class="dock-status-pill">
+                        <div class="dock-status-pill-dot"></div>
+                        <span class="dock-status-pill-text">Available for hire</span>
+                    </div>
+                </div>
+
+                <div class="dock-divider"></div>
+
+                <!-- Social icons -->
+                <div class="dock-socials">
+                    <a href="#" class="social-icon-btn">
+                        <i class="ti ti-brand-github" style="font-size:18px; color:rgba(255,255,255,0.55);"></i>
+                        <span class="dock-btn-tooltip">GitHub</span>
+                    </a>
+                    <a href="#" class="social-icon-btn">
+                        <i class="ti ti-brand-linkedin" style="font-size:18px; color:rgba(255,255,255,0.55);"></i>
+                        <span class="dock-btn-tooltip">LinkedIn</span>
+                    </a>
+                    <a href="#" class="social-icon-btn">
+                        <i class="ti ti-brand-twitter" style="font-size:18px; color:rgba(255,255,255,0.55);"></i>
+                        <span class="dock-btn-tooltip">Twitter / X</span>
+                    </a>
+                    <a href="#" class="social-icon-btn">
+                        <i class="ti ti-brand-instagram" style="font-size:18px; color:rgba(255,255,255,0.55);"></i>
+                        <span class="dock-btn-tooltip">Instagram</span>
+                    </a>
+                </div>
+
+                <div class="dock-divider"></div>
+
+                <!-- Hire CTA -->
+                <div class="hire-cta">
+                    <i class="ti ti-send" style="font-size:18px; color:#2dd4bf;"></i>
+                    <span class="hire-cta-text">Hire Me</span>
+                    <span class="hire-cta-arrow">→</span>
+                </div>
+
+                <div class="dock-divider"></div>
+
+                <!-- Live clock -->
+                <div style="text-align:right; min-width:52px;">
+                    <div style="font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:rgba(255,255,255,0.85); letter-spacing:-0.5px;" id="dock-time">--:--</div>
+                    <div style="font-size:10px; color:rgba(255,255,255,0.3); margin-top:2px; letter-spacing:0.05em;" id="dock-day">---</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabler icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+    <script>
+        function updateClocks() {
+            const now = new Date();
+            const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            const shortDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+            const h  = String(now.getHours()).padStart(2,'0');
+            const m  = String(now.getMinutes()).padStart(2,'0');
+            const dateStr = months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+
+            const bigClock = document.getElementById('clock-h');
+            if (bigClock) bigClock.innerHTML = h + '<span>:</span><span>' + m + '</span>';
+
+            const bigDate = document.getElementById('clock-date');
+            if (bigDate) bigDate.textContent = days[now.getDay()] + ' · ' + dateStr;
+
+            const dockTime = document.getElementById('dock-time');
+            if (dockTime) dockTime.textContent = h + ':' + m;
+
+            const dockDay = document.getElementById('dock-day');
+            if (dockDay) dockDay.textContent = shortDays[now.getDay()];
+        }
+        updateClocks();
+        setInterval(updateClocks, 1000);
+    </script>
+</body>
+</html>
